@@ -17,7 +17,7 @@ More info: https://github.com/Akascape/Ascify-Art
 import customtkinter
 import sys
 import tkinter as tk
-from tkinter import ttk, font, filedialog
+from tkinter import ttk, font, filedialog, messagebox
 import threading
 import os
 from PIL import Image, ImageDraw, ImageTk, ImageFont, ImageEnhance, UnidentifiedImageError
@@ -50,7 +50,7 @@ if sys.platform.startswith("win"):
         pass
     
 def exit_program():
-    x = tk.messagebox.askquestion("Exit?", "Do you want to close this program?")
+    x = messagebox.askquestion("Exit?", "Do you want to close this program?")
     if x=="yes":
         root.destroy()
     else:
@@ -161,7 +161,7 @@ def openfile():
         try:
             Image.open(file)
         except UnidentifiedImageError:
-            tk.messagebox.showerror("Oops!", "Not a valid image file!")
+            messagebox.showerror("Oops!", "Not a valid image file!")
             file = previous
             return
 
@@ -226,7 +226,7 @@ def open_sequence():
         allitems.extend(glob.glob(dir_img+'\*.webp'))
 
         if len(allitems) == 0:
-            tk.messagebox.showinfo("Oops!", "No valid image files present in this folder!")
+            messagebox.showinfo("Oops!", "No valid image files present in this folder!")
             return
 
         sequence = True
@@ -584,7 +584,7 @@ def export():
     # Saving rendered images
     global file, convert_seq
     if not file:
-        tk.messagebox.showinfo("Uh!","Please import an image!")
+        messagebox.showinfo("Uh!","Please import an image!")
         return
     save.configure(state=tk.DISABLED, fg_color="grey30")
     open_button.configure(state=tk.DISABLED)
@@ -593,7 +593,7 @@ def export():
         operation()
         exported_file = os.path.join(dir_, f"{var.get()}.{format_.get()}")
         if os.path.exists(exported_file):
-            res1 = tk.messagebox.askquestion("Warning!","Do you want to replace the old file with the new one? \n(Process not reversible!)")
+            res1 = messagebox.askquestion("Warning!","Do you want to replace the old file with the new one? \n(Process not reversible!)")
             if res1=='yes':
                 outputImage.save(exported_file)
             elif res1=='no':
@@ -602,13 +602,13 @@ def export():
                 return
         else:
             outputImage.save(exported_file)
-        tk.messagebox.showinfo("Exported", "Image successfully saved")
+        messagebox.showinfo("Exported", "Image successfully saved")
 
     else:
         new_dir = os.path.join(dir_, var.get())
 
         if os.path.exists(new_dir):
-            tk.messagebox.showinfo("Warning!", "A folder with this name already exists, please try a new name!")
+            messagebox.showinfo("Warning!", "A folder with this name already exists, please try a new name!")
         else:
             label_11.grid(row=4, column=0, sticky="w", padx=25, pady=0)
             progress_bar.grid(row=5, column=0, sticky="we", padx=20, pady=(0,20))
@@ -631,7 +631,7 @@ def export():
                 outputImage.save(exported_file)
                 count+=1
 
-            tk.messagebox.showinfo("Exported", "Images successfully saved")
+            messagebox.showinfo("Exported", "Images successfully saved")
             convert_seq = True
 
         label_11.grid_forget()
